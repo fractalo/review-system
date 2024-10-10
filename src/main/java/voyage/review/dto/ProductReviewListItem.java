@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 public record ProductReviewListItem(
         Long id,
         Long userId,
-        Double score,
+        Long score,
         String content,
         String imageUrl,
         String createdAt
@@ -17,7 +17,7 @@ public record ProductReviewListItem(
         this(
                 review.getId(),
                 review.getUserId(),
-                review.getScore(),
+                Math.round(review.getScore()),
                 review.getContent(),
                 review.getImageUrl(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
