@@ -28,7 +28,7 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductReview> reviews = new ArrayList<>();
 
-    public void addReview(ProductReview review) {
+    public void updateStatsForNewReview(ProductReview review) {
         long newReviewCount = reviewCount + 1;
         double newAverageScore = (score / newReviewCount) * reviewCount + (review.getScore() / newReviewCount);
         this.reviewCount = newReviewCount;

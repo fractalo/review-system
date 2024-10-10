@@ -27,13 +27,13 @@ public class ProductReviewService {
 
     @Transactional
     public void addReview(Long productId, ProductReviewParam param) {
-        Product product = productRepository.findById(productId)
+        Product product = productRepository.findByIdWithLock(productId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
 
         ProductReview productReview = new ProductReview(product, param);
         productReviewRepository.save(productReview);
 
-        product.addReview(productReview);
+        product.updateStatsForNewReview(productReview);
     }
 
     public ProductReviewList getReviews(Long productId, ProductReviewQuery query) {
