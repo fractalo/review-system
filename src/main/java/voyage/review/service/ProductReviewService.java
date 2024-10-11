@@ -65,7 +65,7 @@ public class ProductReviewService {
 
         return new ProductReviewList(
                 product.getReviewCount(),
-                product.getScore(),
+                product.getAverageScore(),
                 nextCursor,
                 reviews
         );

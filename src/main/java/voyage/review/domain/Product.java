@@ -12,26 +12,25 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Column(name = "reviewCount")
     private Long reviewCount;
 
     @NotNull
-    private Double score;
+    @Column(name = "score")
+    private Double averageScore;
 
     @OneToMany(mappedBy = "product")
     private List<ProductReview> reviews = new ArrayList<>();
 
     public void updateStatsForNewReview(ProductReview review) {
         long newReviewCount = reviewCount + 1;
-        double newAverageScore = (score / newReviewCount) * reviewCount + (review.getScore() / newReviewCount);
+        double newAverageScore = (averageScore / newReviewCount) * reviewCount + (review.getScore() / newReviewCount);
         this.reviewCount = newReviewCount;
-        this.score = newAverageScore;
+        this.averageScore = newAverageScore;
     }
 }

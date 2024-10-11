@@ -6,5 +6,7 @@ import lombok.Data;
 @Data
 public class ProductReviewQuery {
     private Long cursor;
-    @PositiveOrZero private Long size = 10L;
+
+    @PositiveOrZero
+    private Long size = 10L;
 }
