@@ -19,23 +19,24 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ProductReviewService {
     private final ProductRepository productRepository;
     private final ProductReviewRepository productReviewRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Transactional
-    public void addReview(Long productId, ProductReviewParam param) {
+    public Long addReview(Long productId, ProductReviewParam param) {
         Product product = productRepository.findByIdWithLock(productId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
 
         ProductReview productReview = new ProductReview(product, param);
+        product.updateStatsForNewReview(productReview);
         productReviewRepository.save(productReview);
 
-        product.updateStatsForNewReview(productReview);
+        return productReview.getId();
     }
 
+    @Transactional(readOnly = true)
     public ProductReviewList getReviews(Long productId, ProductReviewQuery query) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
@@ -69,6 +70,13 @@ public class ProductReviewService {
                 nextCursor,
                 reviews
         );
+    }
+
+    @Transactional
+    public void updateReviewImageUrl(Long reviewId, String imageUrl) {
+        ProductReview review = productReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품 리뷰입니다."));
+        review.setImageUrl(imageUrl);
     }
 
 }
