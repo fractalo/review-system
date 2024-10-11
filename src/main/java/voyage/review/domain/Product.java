@@ -18,11 +18,11 @@ public class Product {
     private Long id;
 
     @NotNull
-    private Long reviewCount;
+    private Long reviewCount = 0L;
 
     @NotNull
     @Column(name = "score")
-    private Double averageScore;
+    private Double averageScore = 0.0;
 
     @OneToMany(mappedBy = "product")
     private List<ProductReview> reviews = new ArrayList<>();
@@ -32,5 +32,9 @@ public class Product {
         double newAverageScore = (averageScore / newReviewCount) * reviewCount + (review.getScore() / newReviewCount);
         this.reviewCount = newReviewCount;
         this.averageScore = newAverageScore;
+    }
+
+    public static Product createProduct() {
+        return new Product();
     }
 }
